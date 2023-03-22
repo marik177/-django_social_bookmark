@@ -1,8 +1,7 @@
-from django.contrib.auth.views import LoginView
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponse
-from django.views import View
+from django.contrib.auth.decorators import login_required
 
 from .forms import LoginForm
 
@@ -28,3 +27,8 @@ def user_login(request):
     return render(request, 'account/login.html', {'form': form})
 
 
+@login_required
+def dashboard(request):
+    return render(request,
+                  'account/dashboard.html',
+                  {'section': 'dashboard'})
