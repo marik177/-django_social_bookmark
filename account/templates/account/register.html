@@ -7,7 +7,7 @@
   <p>Please sing up using the following form:</p>
   <form method="post">
     {% csrf_token %}
-    {{ form.as_p }}
+    {{ user_form.as_p }}
   <p><input type="submit" value="Create my account"></p>
   </form>
   
