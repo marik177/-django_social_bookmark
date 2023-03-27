@@ -9,8 +9,11 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
-
+import os
 from pathlib import Path
+from dotenv import load_dotenv
+
+load_dotenv()  # loads the configs from .env
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -19,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-dr!!yuhm=&c9fbnpp2avuz2p+*wsq$6x3v=xnimkd3wzgny(7o"
+SECRET_KEY = str(os.getenv('SECRET_KEY'))
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -133,13 +136,33 @@ AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend',
                            'account.authentication.EmailAuthBackend',
                            'social_core.backends.facebook.FacebookOAuth2',
                            'social_core.backends.vk.VKOAuth2',
+                           'social_core.backends.google.GoogleOAuth2',
+                           'social_core.backends.yandex.YandexOAuth2',
 
                            ]
-SOCIAL_AUTH_FACEBOOK_KEY = '6330051230346788'
-SOCIAL_AUTH_FACEBOOK_SECRET = '928e7ff84ce1c3dda71139cb74853780'
+SOCIAL_AUTH_FACEBOOK_KEY = str(os.getenv('SOCIAL_AUTH_FACEBOOK_KEY'))
+SOCIAL_AUTH_FACEBOOK_SECRET = str(os.getenv('SOCIAL_AUTH_FACEBOOK_SECRET'))
 SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
 
-SOCIAL_AUTH_VK_OAUTH2_KEY = '51592381'
-SOCIAL_AUTH_VK_OAUTH2_SECRET = 'KxSlt7GQfv7gmh7m6sSk'
+SOCIAL_AUTH_VK_OAUTH2_KEY = str(os.getenv('SOCIAL_AUTH_VK_OAUTH2_KEY'))
+SOCIAL_AUTH_VK_OAUTH2_SECRET = str(os.getenv('SOCIAL_AUTH_VK_OAUTH2_SECRET'))
 SOCIAL_AUTH_VK_OAUTH2_SCOPE = ['email']
 
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = str(os.getenv('SOCIAL_AUTH_GOOGLE_OAUTH2_KEY'))
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = str(os.getenv('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET'))
+
+SOCIAL_AUTH_YANDEX_OAUTH2_KEY = str(os.getenv('SOCIAL_AUTH_YANDEX_OAUTH2_KEY'))
+SOCIAL_AUTH_YANDEX_OAUTH2_SECRET = str(os.getenv('SOCIAL_AUTH_YANDEX_OAUTH2_SECRET'))
+
+SOCIAL_AUTH_PIPELINE = [
+    'social_core.pipeline.social_auth.social_details',
+    'social_core.pipeline.social_auth.social_uid',
+    'social_core.pipeline.social_auth.auth_allowed',
+    'social_core.pipeline.social_auth.social_user',
+    'social_core.pipeline.user.get_username',
+    'social_core.pipeline.user.create_user',
+    'account.authentication.create_profile',
+    'social_core.pipeline.social_auth.associate_user',
+    'social_core.pipeline.social_auth.load_extra_data',
+    'social_core.pipeline.user.user_details',
+]
