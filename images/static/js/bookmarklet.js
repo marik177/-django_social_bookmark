@@ -36,7 +36,7 @@ function bookmarkletLaunch() {
 
     // find images in the DOM with the minimum dimensions
     let images = document.querySelectorAll
-    ('img[src$=".jpg"], img[src$=".jpeg"], img[src$=".png"]');
+    ('img[src*=".jpg"], img[src*=".jpeg"], img[src*=".png"]');
 
     images.forEach(image => {
         if (image.naturalWidth >= minWidth &&
