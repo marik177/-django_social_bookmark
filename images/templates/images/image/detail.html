@@ -31,7 +31,7 @@
       {% for user in image.users_like.all %}
         <div>
           {% if user.profile.photo %}
-            <img src="{{ user.profile.photo.url }}">
+            <a href="{{ user.get_absolute_url }}"><img src="{{ user.profile.photo.url }}"></a>
           {% endif %}
           <p>{{ user.first_name }}</p>
         </div>
@@ -90,54 +90,3 @@
   })
   })
 {% endblock %}
-<script>
-    const url = "{% url 'images:like' %}";
-    let options = {
-        method: 'POST',
-        mode: 'same-origin',
-        headers: {
-            'X-CSRFToken': csrftoken,
-        }
-    };
-    document.querySelector('a.like')
-        .addEventListener('click', function (e) {
-            e.preventDefault();
-            let likeButton = this;
-
-            // add request body
-            let formData = new FormData();
-            formData.append('id', likeButton.dataset.id);
-            formData.append('action', likeButton.dataset.action);
-
-            // three different ways to see formData
-            for (let [key, value] of formData) {
-                console.log(`${key}: ${value}`)
-            }
-            console.log([...formData]);
-            console.log(...formData);
-            options['body'] = formData;
-
-            // send http request
-            fetch(url, options)
-                .then(response => response.json())
-                .then(data => {
-                    if (data['status'] === 'ok') {
-                        let previousAction = likeButton.dataset.action;
-
-                        // toggle button text and data-action
-                        let action = previousAction === 'like' ? 'unlike' : 'like';
-                        likeButton.dataset.action = action;
-                        likeButton.innerHTML = action;
-
-                        // update like counts
-                        let likeCount = document.querySelector('span.count .total');
-                        let totalLikes = parseInt(likeCount.innerHTML);
-                        likeCount.innerHTML = previousAction === 'like' ? totalLikes + 1 : totalLikes - 1;
-
-
-                    }
-                });
-
-        })
-
-</script>
