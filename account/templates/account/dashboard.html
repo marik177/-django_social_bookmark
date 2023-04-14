@@ -15,6 +15,13 @@
   <p>You can <a href="{% url 'edit' %}">edit your profile</a>
   or <a href="{% url 'password_change' %}">change your password</a>
   </p>
-{{ actions }}
+
+  <h2>What's happening</h2>
+{% for action in actions %}
+  <div id="action-list">
+  {% include 'actions/action/detail.html' %}
+  </div>
+  {% endfor %}
+
 {% endblock %}
 
