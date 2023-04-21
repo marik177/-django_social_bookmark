@@ -16,6 +16,7 @@ from django.urls import reverse_lazy
 
 load_dotenv()  # loads the configs from .env
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -184,6 +185,7 @@ INTERNAL_IPS = [
     "127.0.0.1",
 ]
 
-REDIS_HOST = 'localhost'
+# REDIS_HOST = 'redis'
+REDIS_HOST = os.environ.get('REDIS_HOST', 'localhost')
 REDIS_PORT = 6379
 REDIS_DB = 0

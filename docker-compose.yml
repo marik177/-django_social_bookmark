@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    command: bash -c 'python manage.py runserver 0.0.0.0:8000'
+    environment:
+      - REDIS_HOST=redis
+    ports:
+      - '8000:8000'
+    depends_on:
+      - redis
+  redis:
+    image: redis
+    container_name : redis_new
+    restart: unless-stopped
+    ports:
+        - '6379:6379'
+
+
+
+
